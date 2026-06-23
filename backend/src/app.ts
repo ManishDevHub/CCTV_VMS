@@ -1,4 +1,4 @@
-import './database';
+
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import morgan from "morgan";
