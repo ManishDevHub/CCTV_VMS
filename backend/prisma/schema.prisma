@@ -1,0 +1,41 @@
+// backend/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
+
+ model Camera {
+   id        Int      @id @default(autoincrement())
+   name      String
+   streamUrl String
+   status    String   @default("offline")
+   createdAt DateTime @default(now())
+   recordings Recording[]
+   detections Detection[]
+ }
+
+ model Recording {
+   id        Int      @id @default(autoincrement())
+   camera    Camera   @relation(fields: [cameraId], references: [id])
+   cameraId  Int
+   fileName  String
+   minioUrl  String
+   size      Int      // size in bytes
+   duration  Float    // duration in seconds
+   createdAt DateTime @default(now())
+ }
+
+ model Detection {
+   id          Int      @id @default(autoincrement())
+   camera      Camera   @relation(fields: [cameraId], references: [id])
+   cameraId    Int
+   objectType  String
+   confidence  Float
+   snapshotUrl String
+   createdAt   DateTime @default(now())
+ }
