@@ -1,0 +1,62 @@
+mqtt:
+  enabled: false
+
+detectors:
+  cpu1:
+    type: cpu
+
+objects:
+  track:
+    - person
+    - car
+    - motorcycle
+    - bicycle
+    - dog
+    - cat
+
+record:
+  enabled: true
+
+snapshots:
+  enabled: true
+
+go2rtc:
+  streams:
+    frontdoor:
+      - rtsp://10.195.30.129:8080/h264_aac.sdp
+
+    laptopcam:
+      - rtsp://host.docker.internal:8556/webcam
+
+cameras:
+  frontdoor:
+    enabled: true
+
+    ffmpeg:
+      inputs:
+        - path: rtsp://10.195.30.129:8080/h264_aac.sdp
+          roles:
+            - detect
+            - record
+
+    detect:
+      width: 640
+      height: 480
+      fps: 5
+
+  laptopcam:
+    enabled: true
+
+    ffmpeg:
+      inputs:
+        - path: rtsp://host.docker.internal:8556/webcam
+          roles:
+            - detect
+            - record
+
+    detect:
+      width: 1280
+      height: 720
+      fps: 5
+
+version: 0.17-0
